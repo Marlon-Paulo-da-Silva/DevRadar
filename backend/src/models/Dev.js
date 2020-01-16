@@ -5,7 +5,10 @@ const DevSchema = new mongoose.Schema({
   github_username: String,
   bio: String,
   avatar_url: String,
-  techs: [String]
+  techs: [String],
+  location: {
+    type:
+  }
 });
 
 module.exports = mongoose.model("Dev", DevSchema);
