@@ -7,6 +7,7 @@ import "./Sidebar.css";
 import "./Main.css";
 
 function App() {
+  const [devs, setDevs] = useState([]);
   const [github_username, setGithub_username] = useState("");
   const [techs, setTechs] = useState("");
 
@@ -29,6 +30,16 @@ function App() {
     );
   }, []);
 
+  useEffect(() => {
+    async function loadDevs() {
+      const response = await api.get("/devs");
+
+      setDevs(response.data);
+    }
+
+    loadDevs();
+  }, []);
+
   async function handleAddDev(e) {
     e.preventDefault();
 
@@ -41,6 +52,8 @@ function App() {
 
     setGithub_username("");
     setTechs("");
+
+    setDevs([...devs, response.data]);
   }
 
   return (
@@ -97,82 +110,21 @@ function App() {
       </aside>
       <main>
         <ul>
-          <li className="dev-item">
-            <header>
-              <img
-                src="https://avatars2.githubusercontent.com/u/23368031?s=300&v=4"
-                alt="Marlon Paulon da Silva"
-              />
-              <div className="user-info">
-                <strong>Marlon Paulo da Silva</strong>
-                <span>Flutter, ReactJS</span>
-              </div>
-            </header>
-            <p>
-              Criador de Soluções 🚀 utilizando as melhores tecnologias de
-              desenvolvimento web e mobile.
-            </p>
-            <a href="https://github.com/Marlon-Paulo-da-Silva">
-              Acessar o perfil do github
-            </a>
-          </li>
-          <li className="dev-item">
-            <header>
-              <img
-                src="https://avatars2.githubusercontent.com/u/23368031?s=300&v=4"
-                alt="Marlon Paulon da Silva"
-              />
-              <div className="user-info">
-                <strong>Marlon Paulo da Silva</strong>
-                <span>Flutter, ReactJS</span>
-              </div>
-            </header>
-            <p>
-              Criador de Soluções 🚀 utilizando as melhores tecnologias de
-              desenvolvimento web e mobile.
-            </p>
-            <a href="https://github.com/Marlon-Paulo-da-Silva">
-              Acessar o perfil do github
-            </a>
-          </li>
-          <li className="dev-item">
-            <header>
-              <img
-                src="https://avatars2.githubusercontent.com/u/23368031?s=300&v=4"
-                alt="Marlon Paulon da Silva"
-              />
-              <div className="user-info">
-                <strong>Marlon Paulo da Silva</strong>
-                <span>Flutter, ReactJS</span>
-              </div>
-            </header>
-            <p>
-              Criador de Soluções 🚀 utilizando as melhores tecnologias de
-              desenvolvimento web e mobile.
-            </p>
-            <a href="https://github.com/Marlon-Paulo-da-Silva">
-              Acessar o perfil do github
-            </a>
-          </li>
-          <li className="dev-item">
-            <header>
-              <img
-                src="https://avatars2.githubusercontent.com/u/23368031?s=300&v=4"
-                alt="Marlon Paulon da Silva"
-              />
-              <div className="user-info">
-                <strong>Marlon Paulo da Silva</strong>
-                <span>Flutter, ReactJS</span>
-              </div>
-            </header>
-            <p>
-              Criador de Soluções 🚀 utilizando as melhores tecnologias de
-              desenvolvimento web e mobile.
-            </p>
-            <a href="https://github.com/Marlon-Paulo-da-Silva">
-              Acessar o perfil do github
-            </a>
-          </li>
+          {devs.map(dev => (
+            <li key={dev._id} className="dev-item">
+              <header>
+                <img src={dev.avatar_url} alt={dev.name} />
+                <div className="user-info">
+                  <strong>{dev.name}</strong>
+                  <span>{dev.techs.join(", ")}</span>
+                </div>
+              </header>
+              <p>{dev.bio}</p>
+              <a href={`https://github.com/${dev.github_username}`}>
+                Acessar o perfil do github
+              </a>
+            </li>
+          ))}
         </ul>
       </main>
     </div>
