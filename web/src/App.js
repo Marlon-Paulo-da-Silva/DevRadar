@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import "./global.css";
 import "./App.css";
@@ -6,6 +6,25 @@ import "./Sidebar.css";
 import "./Main.css";
 
 function App() {
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+
+        setLatitude(latitude);
+        setLongitude(longitude);
+      },
+      err => {
+        console.log(err);
+      },
+      {
+        timeout: 30000
+      }
+    );
+  }, []);
+
   return (
     <div id="app">
       <aside>
@@ -22,11 +41,25 @@ function App() {
           <div className="input-group">
             <div className="input-block">
               <label htmlFor="latitude">Latitude</label>
-              <input name="latitude" id="latitude" required />
+              <input
+                type="number"
+                name="latitude"
+                id="latitude"
+                required
+                value={latitude}
+                onChange={e => setLatitude(e.target.value)}
+              />
             </div>
             <div className="input-block">
               <label htmlFor="Longitude">Longitude</label>
-              <input name="Longitude" id="Longitude" required />
+              <input
+                type="number"
+                name="Longitude"
+                id="Longitude"
+                required
+                value={longitude}
+                onChange={e => setLongitude(e.target.value)}
+              />
             </div>
           </div>
           <button type="submit">Salvar</button>
