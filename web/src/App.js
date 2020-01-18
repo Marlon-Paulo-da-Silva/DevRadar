@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import api from "./services/api";
 
 import "./global.css";
 import "./App.css";
@@ -6,6 +7,9 @@ import "./Sidebar.css";
 import "./Main.css";
 
 function App() {
+  const [github_username, setGithub_username] = useState("");
+  const [techs, setTechs] = useState("");
+
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   useEffect(() => {
@@ -25,18 +29,44 @@ function App() {
     );
   }, []);
 
+  async function handleAddDev(e) {
+    e.preventDefault();
+
+    const response = await api.post("/devs", {
+      github_username,
+      techs,
+      latitude,
+      longitude
+    });
+
+    setGithub_username("");
+    setTechs("");
+  }
+
   return (
     <div id="app">
       <aside>
         <strong>Cadastrar</strong>
-        <form>
+        <form onSubmit={handleAddDev}>
           <div className="input-block">
             <label htmlFor="github_username">Usuario do Github</label>
-            <input name="github_username" id="github_username" required />
+            <input
+              value={github_username}
+              onChange={e => setGithub_username(e.target.value)}
+              name="github_username"
+              id="github_username"
+              required
+            />
           </div>
           <div className="input-block">
             <label htmlFor="techs">Tecnologias</label>
-            <input name="techs" id="techs" required />
+            <input
+              value={techs}
+              onChange={e => setTechs(e.target.value)}
+              name="techs"
+              id="techs"
+              required
+            />
           </div>
           <div className="input-group">
             <div className="input-block">
