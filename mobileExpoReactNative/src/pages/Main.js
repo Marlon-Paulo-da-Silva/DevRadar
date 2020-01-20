@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Image } from "react-native";
+import { StyleSheet, Image, View, Text } from "react-native";
 
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Callout } from "react-native-maps";
 import {
   requestPermissionsAsync,
   getCurrentPositionAsync
@@ -46,6 +46,16 @@ function Main() {
             uri: "https://avatars2.githubusercontent.com/u/23368031?s=460&v=4"
           }}
         />
+        <Callout>
+          <View style={styles.callout}>
+            <Text style={styles.devName}>Marlon Paulo</Text>
+            <Text style={styles.devBio}>
+              Criador de Soluções 🚀 utilizando as melhores tecnologias de
+              desenvolvimento web e mobile.
+            </Text>
+            <Text style={styles.devTechs}>React, React Native, Flutter</Text>
+          </View>
+        </Callout>
       </Marker>
     </MapView>
   );
@@ -61,6 +71,20 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 4,
     borderColor: "#fff"
+  },
+  callout: {
+    width: 260
+  },
+  devName: {
+    fontWeight: "bold",
+    fontSize: 16
+  },
+  devBio: {
+    color: "#666",
+    marginTop: 5
+  },
+  devTechs: {
+    marginTop: 5
   }
 });
 
