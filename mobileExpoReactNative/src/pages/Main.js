@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
+import api from "../services/api";
+
 import MapView, { Marker, Callout } from "react-native-maps";
 import {
   requestPermissionsAsync,
@@ -17,6 +19,7 @@ import {
 
 function Main({ navigation }) {
   const [currentRegion, setCurrentRegion] = useState(null);
+  const [devs, setDevs] = useState([]);
 
   useEffect(() => {
     async function loadInitialPosition() {
@@ -41,37 +44,64 @@ function Main({ navigation }) {
     loadInitialPosition();
   }, []);
 
+  async function loadDevs() {
+    const { latitude, longitude } = currentRegion;
+
+    const response = await api.get("/search", {
+      params: {
+        latitude,
+        longitude,
+        techs: "Flutter"
+      }
+    });
+    setDevs(response.data.devs);
+  }
+
+  function handleRegionChanged(region) {
+    console.log(region);
+    setCurrentRegion(region);
+  }
+
   if (!currentRegion) {
     return null;
   }
 
   return (
     <>
-      <MapView initialRegion={currentRegion} style={styles.map}>
-        <Marker coordinate={{ latitude: -22.0700938, longitude: -51.4175201 }}>
-          <Image
-            style={styles.avatar}
-            source={{
-              uri: "https://avatars2.githubusercontent.com/u/23368031?s=460&v=4"
-            }}
-          />
-          <Callout
-            onPress={() => {
-              navigation.navigate("Profile", {
-                github_username: "marlon-paulo-da-silva"
-              });
+      <MapView
+        onRegionChangeComplete={handleRegionChanged}
+        initialRegion={currentRegion}
+        style={styles.map}
+      >
+        {devs.map(dev => (
+          <Marker
+            key={dev._id}
+            coordinate={{
+              longitude: dev.location.coordinates[0],
+              latitude: dev.location.coordinates[1]
             }}
           >
-            <View style={styles.callout}>
-              <Text style={styles.devName}>Marlon Paulo</Text>
-              <Text style={styles.devBio}>
-                Criador de Soluções 🚀 utilizando as melhores tecnologias de
-                desenvolvimento web e mobile.
-              </Text>
-              <Text style={styles.devTechs}>React, React Native, Flutter</Text>
-            </View>
-          </Callout>
-        </Marker>
+            <Image
+              style={styles.avatar}
+              source={{
+                uri: dev.avatar_url
+              }}
+            />
+            <Callout
+              onPress={() => {
+                navigation.navigate("Profile", {
+                  github_username: dev.github_username
+                });
+              }}
+            >
+              <View style={styles.callout}>
+                <Text style={styles.devName}>{dev.name}</Text>
+                <Text style={styles.devBio}>{dev.bio}</Text>
+                <Text style={styles.devTechs}>{dev.techs.join(", ")}</Text>
+              </View>
+            </Callout>
+          </Marker>
+        ))}
       </MapView>
       <View style={styles.searchForm}>
         <TextInput
@@ -81,7 +111,7 @@ function Main({ navigation }) {
           autoCapitalize="words"
           autoCorrect={false}
         />
-        <TouchableOpacity onPress={() => {}} style={styles.loadButton}>
+        <TouchableOpacity onPress={loadDevs} style={styles.loadButton}>
           <MaterialIcons name="my-location" size={20} color="#fff" />
         </TouchableOpacity>
       </View>
@@ -116,8 +146,7 @@ const styles = StyleSheet.create({
   },
   searchForm: {
     position: "absolute",
-
-    bottom: 20,
+    top: 20,
     left: 20,
     right: 20,
     zIndex: 5,
