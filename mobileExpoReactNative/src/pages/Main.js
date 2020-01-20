@@ -10,6 +10,7 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 
 import api from "../services/api";
+import { connect, disconnect } from "../services/socket";
 
 import MapView, { Marker, Callout } from "react-native-maps";
 import {
@@ -45,6 +46,10 @@ function Main({ navigation }) {
     loadInitialPosition();
   }, []);
 
+  function setupWebSocket() {
+    connect();
+  }
+
   async function loadDevs() {
     const { latitude, longitude } = currentRegion;
 
@@ -56,6 +61,7 @@ function Main({ navigation }) {
       }
     });
     setDevs(response.data.devs);
+    setupWebSocket();
   }
 
   function handleRegionChanged(region) {
