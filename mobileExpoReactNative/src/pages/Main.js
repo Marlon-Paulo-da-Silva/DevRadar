@@ -10,7 +10,7 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 
 import api from "../services/api";
-import { connect, disconnect } from "../services/socket";
+import { connect, disconnect, subscribeToNewDevs } from "../services/socket";
 
 import MapView, { Marker, Callout } from "react-native-maps";
 import {
@@ -45,6 +45,10 @@ function Main({ navigation }) {
 
     loadInitialPosition();
   }, []);
+
+  useEffect(() => {
+    subscribeToNewDevs(dev => setDevs([...devs, dev]));
+  }, [devs]);
 
   function setupWebSocket() {
     disconnect();

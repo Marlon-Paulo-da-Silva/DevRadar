@@ -5,7 +5,7 @@ const socket = socketio("http://192.168.0.105:3333", {
 });
 
 function subscribeToNewDevs(subscribeFunction) {
-  socket.on('new-dev', subscribeFunction)
+  socket.on("new-dev", subscribeFunction);
 }
 
 function connect(latitude, longitude, techs) {
@@ -23,4 +23,4 @@ function disconnect() {
   }
 }
 
-export { connect, disconnect };
+export { connect, disconnect, subscribeToNewDevs };
