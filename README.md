@@ -4,6 +4,20 @@
 
 ### Feito com React, React Native e Node.js
 
-![](https://github.com/Marlon-Paulo-da-Silva/DevRadar/blob/master/telaWeb.PNG)
+### Usando MongoDB
 
-![](https://github.com/Marlon-Paulo-da-Silva/DevRadar/blob/master/tela1mobile.jpeg) ![](https://github.com/Marlon-Paulo-da-Silva/DevRadar/blob/master/tela2mobile.jpeg) ![](https://github.com/Marlon-Paulo-da-Silva/DevRadar/blob/master/tela3mobile.jpeg)
+#### Pagina Web
+
+<p align="center">
+  <img width="580" height="300" src="https://github.com/Marlon-Paulo-da-Silva/DevRadar/blob/master/telaWeb.PNG">
+</p>
+
+#### Aplicacao Mobile
+
+<p align="center">
+  <img align="center" width="190" height="400" src="https://github.com/Marlon-Paulo-da-Silva/DevRadar/blob/master/tela1mobile.jpeg">
+
+  <img align="center" width="190" height="400" src="https://github.com/Marlon-Paulo-da-Silva/DevRadar/blob/master/tela2mobile.jpeg">
+
+  <img align="center" width="190" height="400" src="https://github.com/Marlon-Paulo-da-Silva/DevRadar/blob/master/tela3mobile.jpeg">
+</p>
