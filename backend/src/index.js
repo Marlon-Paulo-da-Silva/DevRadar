@@ -12,7 +12,7 @@ const server = http.Server(app);
 setupWebSocket(server);
 
 mongoose.connect(
-  "mongodb+srv://omnistack:omnistack@cluster0-xvuk2.mongodb.net/week10?retryWrites=true&w=majority",
+  process.env.MONGO_URL || "mongodb://localhost:27017/week10",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
